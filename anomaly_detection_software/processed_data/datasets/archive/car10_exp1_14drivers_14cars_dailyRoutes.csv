@@ -1,0 +1,6 @@
+Time,Engine Coolant Temperature [C],Intake Manifold Pressure [kPa],Engine RPM [RPM],Vehicle Speed [km/h],Intake Air Temperature [C],MAF [g/s],Throttle Position [%],Ambient Air Temperature [C]
+0.0,71.0,61.0,910.0,0.0,50.0,,10.0,
+8.011000064000001,71.0,61.0,909.0,0.0,51.0,,10.0,
+16.015000064000002,71.0,55.0,914.0,0.0,51.0,,9.0,
+24.020000256000003,71.0,57.0,1299.0,0.0,51.0,,12.0,
+32.027000064,71.0,61.0,901.0,0.0,51.0,,10.0,
