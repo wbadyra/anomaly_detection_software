@@ -6,11 +6,9 @@ import umap
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 
-UNSELECTED_COULMNS = ["Ambient Air Temperature [C]", "Steering Wheel Angle [deg]"]
 
 def get_reduced_data(source_data, method, componants=2, scale=False, scale_fit=True):
     reduction_methods = DimensionReduction()
-    # source_data.drop(UNSELECTED_COULMNS)
     if method == 'PCA':
         data = reduction_methods.PCA(source_data, scale=scale, scale_fit=scale_fit)[0:60000]
     elif method == 'UMAP':

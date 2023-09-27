@@ -1,5 +1,4 @@
 import glob
-
 from keras.callbacks import EarlyStopping
 import pandas as pd
 import numpy as np
@@ -10,17 +9,8 @@ from sklearn.preprocessing import normalize
 
 from transform_features import dataset_adaptation
 from sklearn.model_selection import train_test_split
-# from baseline_models.utils import save_model
 from sklearn.utils import shuffle
 from Xgboost_model import XGBoost_model, metrics
-
-# def prepare_datasets(dir, list_of_datasets):
-#     # remember to normalize
-#     datasets = []
-#     for dataset in list_of_datasets:
-#         with open(f"{dir}/{dataset}.csv", "r") as fileout:
-#             pass
-
 
 
 PARAMS = [0.4, 0.6, 0.8, 1.0]
@@ -64,21 +54,6 @@ def adaptation_models(train_dataset, validation_dataset, test_dataset, algorithm
     seed = json.load(open('/home/wasyl/projekt_badawczy/cbc_covid/baseline_models/hyperparameters.json'))['random_state']
     x_train, y_train = shuffle(x_train, y_train, random_state=seed)
 
-    # given model_name properly implement early stopping and fit data to the model
-    # if model_name == "tensorflow":
-    #     callback = EarlyStopping(monitor='accuracy', patience=10)
-    #     model.fit(x_train, y_train, validation_split=0.1, callbacks=[callback])
-    # elif model_name == "TabNet":
-    #     model.fit(X_train=x_train, y_train=y_train,
-    #               eval_set=[(x_val, y_val)],
-    #               eval_name=["val"], eval_metric=['accuracy'], max_epochs=500)
-    # elif model_name == "ANN":
-    #     es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=200)
-    #     model.fit(x_train, y_train,
-    #               validation_data=(x_val, y_val), epochs=500, callbacks=[es])
-    # elif model_name == ["CatBoost", "XGBoost"]:
-    #     model.fit(x_train, y_train, eval_set=(x_val, y_val), early_stopping_rounds=10)
-    # else:
     model.fit(x_train, y_train)
     return model, x_test, y_test
 
@@ -154,7 +129,7 @@ def prepare_dataset(train_data, validation_data, test_data, external_validation=
     frames_list = []
     if not external_validation:
         # if not external_validation we must divide our test_dataset to validation and test data
-        seed = json.load(open('/home/wasyl/projekt_badawczy/cbc_covid/baseline_models/hyperparameters.json'))[
+        seed = json.load(open('/home/wasyl/magisterka/anomaly_detection_software/baseline_models/hyperparameters.json'))[
             'random_state']
         validation_dataset_split, test_dataset_split = train_test_split(test_dataset, train_size=0.5, random_state=seed)
     else:
@@ -231,42 +206,27 @@ def train_model(train_dataset, validation_dataset, test_dataset, model_name, alg
 
 if __name__ == '__main__':
 
-    # here i only need this method
-    # dataset_adaptation
-    # as the only thing i do is to merge all files and do adaptation, no dividing into test and train
     dataset_name = "Dataset"
-    directory = f"/home/wasyl/magisterka/fault_detection/processed_data/datasets/{dataset_name}/"
+    directory = f"/home/wasyl/magisterka/anomaly_detection_software/processed_data/datasets/{dataset_name}/"
 
     os.chdir(directory)
     extension = 'csv'
-    # Time,Engine Coolant Temperature [C],Intake Manifold Pressure [kPa],Engine RPM [RPM],Vehicle Speed [km/h],Throttle Position [%],Accelerator Pedal Position [%],Intake Air Temperature [C],MAF [g/s], ,Ambient Air Temperature [C]
-    # Time,Engine Coolant Temperature [C],Intake Manifold Pressure [kPa],Engine RPM [RPM],Vehicle Speed [km/h],Throttle Position [%],Accelerator Pedal Position [%],Steering Wheel Angle [deg]
-    # Time,Engine Coolant Temperature [C],Intake Manifold Pressure [kPa],Engine RPM [RPM],Vehicle Speed [km/h],Throttle Position [%],Accelerator Pedal Position [%],Steering Wheel Angle [deg]
-    # Time,Engine Coolant Temperature [C],Intake Manifold Pressure [kPa],Engine RPM [RPM],Vehicle Speed [km/h],Throttle Position [%],Accelerator Pedal Position [%],Intake Air Temperature [C]
-    # all_filenames = [i for i in glob.glob('*.{}'.format(extension))]
-    all_filenames = ["/home/wasyl/magisterka/fault_detection/processed_data/datasets/Kia_soul/driver_17.csv",
-                     "/home/wasyl/magisterka/fault_detection/processed_data/datasets/Dataset/B_All_6.csv",
-                     "/home/wasyl/magisterka/fault_detection/processed_data/datasets/carOBD-master/drive10.csv",
-                     "/home/wasyl/magisterka/fault_detection/processed_data/datasets/OBD-II-Dataset/2017-07-27_Seat_Leon_KA_KA_2_Normal.csv"]
+    all_filenames = ["/home/wasyl/magisterka/anomaly_detection_software/processed_data/datasets/Kia_soul/driver_17.csv",
+                     "/home/wasyl/magisterka/anomaly_detection_software/processed_data/datasets/Dataset/B_All_6.csv",
+                     "/home/wasyl/magisterka/anomaly_detection_software/processed_data/datasets/carOBD-master/drive10.csv",
+                     "/home/wasyl/magisterka/anomaly_detection_software/processed_data/datasets/OBD-II-Dataset/2017-07-27_Seat_Leon_KA_KA_2_Normal.csv"]
     # combine all files in the list
     all_dataset_files = []
     for file in all_filenames:
         dataframe = pd.read_csv(file)
         dataframe = dataframe.dropna()
-        # error_list = dataframe.columns.tolist()
-        # dataframe_with_errors = insert_fault_erratic(dataframe, error_list[1:], 0.04, 0.1, 5)
         all_dataset_files.append(pd.read_csv(file))
 
-    # print(dataframe_with_errors["error_Engine Coolant Temperature [C]"], dataframe_with_errors["Engine Coolant Temperature [C]"])
     train_datasets = []
     for dataframe in all_dataset_files:
         for col in ["Intake Air Temperature [C]", "MAF [g/s]", "Ambient Air Temperature [C]", "Steering Wheel Angle [deg]"]:
             if col in list(dataframe.columns):
                 dataframe.drop(col, axis=1, inplace=True)
-        # dataframe = insert_fault_erratic(dataframe, ['Engine RPM [RPM]'], 0.2, 0.4, 10)
-        # dataframe.rename(columns={'error_Engine RPM [RPM]': 'target'}, inplace=True)
-        # dataframe = dataframe.drop(['Engine RPM [RPM]_health'], axis=1)
-        # print(dataframe.columns)
         dataframe['target'] = np.zeros(shape=len(dataframe))
         train_datasets.append(dataframe)
 
@@ -274,23 +234,3 @@ if __name__ == '__main__':
     print(train_dataset_adapted.columns)
     train_dataset_adapted.drop(["target"], axis=1)
     train_dataset_adapted.to_csv("/home/wasyl/magisterka/fault_detection/processed_data/datasets/mixed/test1.csv", index=False)
-
-
-    # dirs = json.load(open('/home/wasyl/projekt_badawczy/cbc_covid/baseline_models/directories.json'))
-    # train_dir = dirs['train_dir']
-    # test_dir = dirs['test_dir']
-    #
-    # TEST_DATASETS = ["uck"]
-    # TRAIN_DATASETS = ["Italy-4", "uck"]
-    # EXPERIMENT = "exp2"
-    #
-    # train_data, validation_data, test_data, filenames = load_datasets(train_dir, test_dir,
-    #                                                                   TRAIN_DATASETS, TEST_DATASETS)
-    # train_dataset, validation_dataset, test_dataset = prepare_dataset(train_data, validation_data, test_data)
-    #
-    # for model_name in MODELS_LIST:
-    #     for adaptation_method in ADAPTATION_METHODS_LIST:
-    #         RESULT_FILE = f'results/{model_name}/{adaptation_method}/train_uck_zenodo_test_uck.txt'
-    #         print(f"Current model: {model_name}, method: {adaptation_method}\n")
-    #         train_model(train_dataset, validation_dataset, test_dataset, model_name, adaptation_method,
-    #                     TRAIN_DATASETS, TEST_DATASETS, EXPERIMENT)

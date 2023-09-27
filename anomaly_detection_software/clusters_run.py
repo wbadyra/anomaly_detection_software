@@ -1,9 +1,7 @@
 import pandas as pd
 
-from ClusteringMethods import ClusteringMethods, plot_2d, plot_3d, clusters_visualization
-from DataPreparation import visualize_data_time
+from ImplementedMethods import ImplementedMethods, clusters_visualization
 from DimensionReduction import DimensionReduction, get_reduced_data
-from faults_preparation import insert_fault_erratic
 from utils import metrics, to_0_1_range, save_data, get_true_labels
 
 
@@ -188,7 +186,7 @@ def run_logistic_regression_model(methods, error_col, reduction, visualization=T
 
 
 def run_all_clustering_methods(methods, error_col, reduction='PCA', visualization=True, params=None):
-    run_dbscan_test(methods, error_col, reduction, visualization=True, params=params)
+    run_dbscan_test(methods, error_col, reduction, visualization=visualization, params=params)
     # run_dbscan_test_pretraining(methods, error_col, reduction, visualization=visualization, params=params)
 
     # run_spectral_clustering_test(methods, error_col, visualization=visualization, params=params)
@@ -202,7 +200,7 @@ def run_all_clustering_methods(methods, error_col, reduction='PCA', visualizatio
     run_gaussian_mixture_test(methods, error_col, reduction, visualization=visualization, params=params)
     # run_gaussian_mixture_test_pretraining(methods, error_col, reduction, visualization=visualization, params=params)
     
-    # run_knn_model(methods, error_col, reduction, visualization=visualization, params=params)
-    # run_svc_model(methods, error_col, reduction, visualization=visualization, params=params)
-    # run_decision_tree_model(methods, error_col, reduction, visualization=visualization, params=params)
-    # run_logistic_regression_model(methods, error_col, reduction, visualization=visualization, params=params)
+    run_knn_model(methods, error_col, reduction, visualization=visualization, params=params)
+    run_svc_model(methods, error_col, reduction, visualization=visualization, params=params)
+    run_decision_tree_model(methods, error_col, reduction, visualization=visualization, params=params)
+    run_logistic_regression_model(methods, error_col, reduction, visualization=visualization, params=params)

@@ -96,7 +96,7 @@ def clusters_visualization(x, labels, model, name='Model'):
     plot_2d(x_b, labels_clusters, x, labels, name)
 
 
-class ClusteringMethods:
+class ImplementedMethods:
     """Class containing fault detection methods based on clustering
 
             Attributes
@@ -118,6 +118,15 @@ class ClusteringMethods:
                 its neighbours
             gaussian_mixture():
                 Clustering based on Gaussian probability distribution
+            KNN():
+                K-nearest neighbors model
+            SVC():
+                Support Vector Classifier
+            DecisionTree():
+                Model utilizing decision trees
+            LogisticRegression():
+                Classifier based on probability of predicted discrete input
+            
 
     """
 
@@ -156,28 +165,6 @@ class ClusteringMethods:
             clusters_visualization(x, labels, model, 'DBscan')
 
         return dbscan, x, labels, params, true_labels
-
-    def spectral_clustering(self, error_col, visualization=False):
-        # takes very long time
-        data = self.data.data_drive_scaled_err
-
-        params = self.data.cols
-
-        x = data.loc[:, params].values
-        true_labels = get_true_labels(data, error_col)
-        model = SpectralClustering(n_clusters=2, assign_labels='discretize', random_state=0)
-
-        spectral_clustering = model.fit(x)  # fitting the model
-        labels = spectral_clustering.labels_  # getting the labels
-        np.set_printoptions(threshold=sys.maxsize)
-
-        if visualization:
-            # Plot the clusters
-            plt.scatter(x[:, 0], x[:, 1], c=labels, cmap="plasma", s=1)  # plotting the clusters
-            plt.colorbar()
-            plt.show()  # showing the plot
-
-        return x, labels, params, true_labels
 
     def isolation_forests(self, error_col, pretraining=False, visualization=False, reduction='PCA'):
         # takes long time for more than 2 columns
@@ -251,18 +238,8 @@ class ClusteringMethods:
             clusters_visualization(x, labels, model, 'Gaussian mixture')
 
         return model, x, labels, params, true_labels
-
-    # LDA is a supervised linear classification algorithm
-    def LDA(self, data, scale=False):
-        reducer = LinearDiscriminantAnalysis()
-        lda_data = reducer.fit_transform(data)
-        if scale:
-            scaler = MinMaxScaler().fit(lda_data)
-            lda_data = pd.DataFrame(scaler.transform(lda_data))
-        print("LDA model shape: ", lda_data.shape)
-        return lda_data
     
-    # here I will add classical algorithms
+    # classical algorithms
     
     def KNN(self, error_col, pretraining=False, visualization=False, reduction='PCA', neighbour_count=9):
         source_data = self.data.data_drive_scaled_err

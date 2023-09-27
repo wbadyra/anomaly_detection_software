@@ -2,8 +2,7 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 import matplotlib.pyplot as plt
 import numpy as np
-
-from utils import read_data, round_half_away_from_zero
+from utils import read_data
 from faults_preparation import insert_fault_erratic, insert_fault_hardover, insert_fault_spike, insert_fault_drift, \
     insert_empty_error_columns
 from preprocessing import filter_by_zeros, filter_out_negatives
@@ -68,14 +67,8 @@ class DataPreparation:
         self.cols.remove('Time')
         # drop for driving data kia soul
         # self.data = self.data.drop(['Time(s)', 'Class', 'PathOrder'], axis=1)
-        self.data = self.data.drop(['Time', 'index'], axis=1, errors='ignore')
-        
-        self.data_correlation()
-        
-        self.data = filter_out_negatives(self.data, ['Vehicle Speed [km/h]', 'Accelerator Pedal Position [%]'])
-        
-        print("Done that")
-        
+        self.data = self.data.drop(['Time', 'index'], axis=1, errors='ignore')        
+        self.data = filter_out_negatives(self.data, ['Vehicle Speed [km/h]', 'Accelerator Pedal Position [%]'])        
         self.data_without_errors = self.data.copy(deep=True)
         self.data = insert_empty_error_columns(self.data)
 

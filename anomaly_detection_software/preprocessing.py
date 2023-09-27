@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 
 
 def filter_out_negatives(df, cols):

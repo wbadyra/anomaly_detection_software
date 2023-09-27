@@ -8,11 +8,8 @@ import copy
 
 
 def is_nan_in_lists(column_of_data):
-    # print(None in column_of_data, np.isnan(column_of_data.values))
     if None in column_of_data or any(math.isnan(x) for x in column_of_data.values):
-        # print("Found nan")
         return True
-    # print("Values are ok")
     return False
 
 
