@@ -1,4 +1,4 @@
-##ABSTRACT##
+## ABSTRACT
 The purpose of this work was to implement a solution for anomaly detection in car sensors. Based on
 gathered datasets thesis was created, which assumes some level of dependence in parameters va-
 lues in given moment of time. Multiple methods were implemented in order to explore this relationship.
