@@ -23,3 +23,7 @@ isolation forest method, which had F1 score around 0.85 and specificity value ar
 globally was decision trees, which F1 score was above 0.9 and specificity value was almost 0.7. Both chosen
 methods were resilient to noise and very stable in various experimental scenarios. Implemented domain 
 adaptation re-weighting algorithm did not improve results on training on joined datasets. 
+
+### DISCLAIMER
+The basics of this software are a result of collective work done by mine coleague and me. The original
+repository can be found here - https://github.com/Piotr1219/fault_detection
