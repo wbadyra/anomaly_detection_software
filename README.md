@@ -16,3 +16,10 @@ interfered. Acquired results allowed choosing the most effective clustering meth
 learning model and analysis of each parameter influence on models behaviour. Both selected methods
 are marked by high effectiveness and stability in all covered scenarios. Developed solution exploiting
 domain adaptation methods showed only little results improvement in proper experiments terms.
+
+## RESULTS
+After many experiments two best methods in each category were selected. In clustering algorithms it was
+isolation forest method, which had F1 score around 0.85 and specificity value around 0.65. The best model
+globally was decision trees, which F1 score was above 0.9 and specificity value was almost 0.7. Both chosen
+methods were resilient to noise and very stable in various experimental scenarios. Implemented domain 
+adaptation re-weighting algorithm did not improve results on training on joined datasets. 
